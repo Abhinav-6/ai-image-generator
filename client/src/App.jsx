@@ -6,7 +6,7 @@ import CreatePost from "./pages/CreatePost";
 const App = () => {
   return (
     <BrowserRouter>
-      <header className="full flex justify-between items center border-b bg-white border-b-[#e6ebf4] px-8 py-4 md:px-4">
+      <header className="full flex justify-between items center border-b bg-white border-b-[#e6ebf4] px-4 py-4 md:px-8 ">
         <Link to="/">
           <img src="/vite.svg" alt="logo" />
         </Link>

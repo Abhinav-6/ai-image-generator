@@ -25,11 +25,9 @@ dalleRoute.post("/", async (req, res) => {
       n: 2,
       size: "1024x1024",
     });
-    console.log(response);
     res.json(response.data.data);
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    res.status(500).send(error?.message | "Something went wrong.");
   }
 });
 
