@@ -3,25 +3,29 @@ import { useRef } from "react";
 import { useState } from "react";
 import axios from "axios";
 import Button from "../components/Button";
+import Loader from "../components/Loader";
 import { getRandomPrompts } from "../utils";
 
 const Home = () => {
   const [img, setImg] = useState("");
+  const [loading, setLoading] = useState(false);
   const [randomPrompt, setRandomPrompt] = useState(getRandomPrompts());
   const promptRef = useRef(null);
 
   function submitHandler() {
+    if (promptRef.current.value == null) return;
     const options = {
       method: "POST",
       url: "http://localhost:3001/v1/create",
-      data: { prompt: "an armchair in the shape of an avocado" },
+      data: { prompt: promptRef.current.value },
     };
-
+    setLoading(true);
     axios
       .request(options)
       .then(function (response) {
         console.log(response.data);
         setImg(response.data.img);
+        setLoading(false);
       })
       .catch(function (error) {
         console.error(error);
@@ -30,6 +34,7 @@ const Home = () => {
 
   function surpriseMeHandler() {
     setRandomPrompt(getRandomPrompts());
+    promptRef.current.value = randomPrompt;
   }
 
   return (
@@ -60,7 +65,24 @@ const Home = () => {
           <Button primary={true} text="Create" clickHandler={submitHandler} />
         </div>
       </form>
-      {img && <img src={img} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {img && (
+            <div className="flex justify-center items-center p-2 md:p-4 flex-col gap-4">
+              <img src={img} className="w-11/12 max-w-xs rounded-md" />
+              <a
+                href={img}
+                download
+                className="px-2 md:px-4 py-2 text-white font-inter font-normal md:font-medium rounded text-center cursor-pointer bg-purple-500"
+              >
+                Download
+              </a>
+            </div>
+          )}
+        </>
+      )}
     </section>
   );
 };
