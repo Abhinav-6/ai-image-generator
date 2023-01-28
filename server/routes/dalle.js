@@ -18,16 +18,21 @@ dalleRoute.get("/", (req, res) => {
 
 dalleRoute.post("/", async (req, res) => {
   const { prompt } = req.body;
+  console.log("prompt user",prompt);
 
   try {
     const response = await openai.createImage({
       prompt,
-      n: 2,
+      n: 1,
       size: "1024x1024",
     });
-    res.json(response.data.data);
+    res.status(200).json({ img: response.data.data[0].url });
   } catch (error) {
-    res.status(500).send(error?.message | "Something went wrong.");
+    console.log("error ",error)
+    console.log("error response",error.response)
+    console.log("error response data error",error.response?.data?.error);
+    // res.status(500).send(error?.message | "Something went wrong.");
+    res.sendStatus(500);
   }
 });
 
