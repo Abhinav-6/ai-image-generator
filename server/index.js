@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 
 import dalleRoute from "./routes/dalle.js";
 import uploadImageRouter from "./routes/uploadImage.js";
-import mongoose from "mongoose";
+import imageRouter from "./routes/images.js";
 import connect from "./mongodb/connect.js";
 
 dotenv.config();
@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use("/v1/create", dalleRoute);
 app.use("/upload", uploadImageRouter);
+app.use("/images", imageRouter);
 
 const startServer = () => {
   app.listen(3001, () => {
